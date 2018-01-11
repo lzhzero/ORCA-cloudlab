@@ -1,0 +1,8 @@
+---
+
+- name: passwordless sudo for the following user
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: shell
+    shell: echo "zliu ALL = (root) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/zliu

@@ -1,0 +1,19 @@
+---
+
+- name: add apt key 
+  apt_key:
+    url: https://download.ceph.com/keys/release.asc
+    state: present
+  become: true
+
+- name: echo into ceph.list
+  shell: echo deb http://download.ceph.com/debian-luminous/ $(lsb_release -sc) main | sudo tee /etc/apt/sources.list.d/ceph.list
+  become: true
+
+- name: apt update
+  apt:
+    name: ceph-deploy
+    update_cache: yes
+  become: true
+    
+    

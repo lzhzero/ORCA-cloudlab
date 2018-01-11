@@ -1,0 +1,7 @@
+---
+
+- name: install ceph-deploy
+  hosts: ceph_deploy
+  gather_facts: false
+  roles:
+    - install-ceph-deploy

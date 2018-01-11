@@ -1,0 +1,8 @@
+---
+
+- name: actual deploy ceph on all servers
+  hosts: ceph_deploy
+  gather_facts: true
+  tasks:
+  - name: ceph-deploy
+    shell: ceph-deploy install --release luminous orca-{1,2,3}

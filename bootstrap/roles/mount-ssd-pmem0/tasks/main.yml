@@ -11,11 +11,9 @@
         (item.key != "pmem0")
   with_dict: "{{ansible_devices}}"
 
-
 - name: print ssd dev name
   debug:
     var: dev_ssd
-
 
 - name: partition ssd sdc with ext4
   parted:
@@ -30,20 +28,47 @@
     dev: "{{dev_ssd}}1"
   become: true
 
-- name: mount partition to project dir
-  mount:
-    path: "{{project_dir}}"
-    src: "{{dev_ssd}}1"
-    fstype: ext4
-    state: mounted
+- name: set hddd device to host var dev_hdd
+#  debug: var=item
+  set_fact:
+    dev_hdd: "/dev/{{item.key}}"
+#    msg: "{{item.key}}"
+#  with_item: "{{hostvars[inventory_hostname]['ansible_devices']}}"
+#  when: "not {{item.value.rotational}} and {{item.key}}!='pmem0' "
+  when: (item.value.rotational=='1') and
+        (item.key != "sda")
+  with_dict: "{{ansible_devices}}"
+
+- name: print hdd dev name
+  debug:
+    var: dev_hdd
+
+- name: partition hdd sdb with ext4
+  parted:
+    device: "{{dev_hdd}}"
+    number: 1
+    state: present
   become: true
 
-- name: chmod /ssd 777
-  file:
-    path: "{{project_dir}}"
-    state: directory
-    mode: 0777
+- name: format new partition
+  filesystem:
+    fstype: ext4
+    dev: "{{dev_hdd}}1"
   become: true
+#- name: mount partition to project dir
+#  mount:
+#    path: "{{project_dir}}"
+#    src: "{{dev_ssd}}1"
+#    fstype: ext4
+#    state: mounted
+#  become: true
+
+#- name: chmod /ssd 777
+#  file:
+#    path: "{{project_dir}}"
+#    state: directory
+#    mode: 0777
+#  become: true
 
 
 #- name: format pmem0
@@ -71,6 +96,7 @@
 
           
 # No need to fix ntp for BangDB,,, YET
+
 #- name: fix ntp.conf
 #  import_tasks: other.yml
 #
