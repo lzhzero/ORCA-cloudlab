@@ -1,0 +1,13 @@
+---
+
+- name: install vm environment
+  hosts: ceph_client
+  gather_facts: false
+  roles:
+    - install-vm-env
+
+  #- name: mount sda4
+  #hosts: ceph_client
+  #gather_facts: false
+  #roles:
+  #  - mount-sda4

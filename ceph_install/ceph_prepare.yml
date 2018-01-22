@@ -5,3 +5,9 @@
   gather_facts: false
   roles:
     - install-ceph-deploy
+
+- name: mount sda4
+  hosts: all
+  gather_facts: false
+  roles:
+    - mount-sda4

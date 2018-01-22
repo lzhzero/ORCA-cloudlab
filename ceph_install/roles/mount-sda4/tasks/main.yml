@@ -1,0 +1,22 @@
+---
+
+- name: format sda4
+  filesystem:
+    fstype: ext4
+    dev: "/dev/sda4"
+  become: true
+
+- name: mount sda4
+  mount:
+    path: "/usr/zliu/sda4"
+    src: "/dev/sda4"
+    fstype: ext4
+    state: mounted
+  become: true
+
+- name: chmod sda4 777
+  file:
+    path: "/usr/zliu/sda4"
+    state: directory
+    mode: 0777
+  become: true    

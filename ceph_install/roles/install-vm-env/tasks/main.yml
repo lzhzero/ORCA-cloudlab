@@ -1,0 +1,15 @@
+---
+
+- name: Install libvirt
+  apt:
+    name: {{item}}
+    update_cache: yes
+    state: installed
+  with_items:
+    - qemu-kvm
+    - libvirt-bin
+- name: move client image to sda4
+  copy:
+    src: /proj/rdma-PG0/zliu/ceph-client-vm
+    dest: /usr/zliu/sda4/
+    directory_mode: yes
